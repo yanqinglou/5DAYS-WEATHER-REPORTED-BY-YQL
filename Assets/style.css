@@ -64,7 +64,8 @@ input{
     height:30px;
     border-radius: 6px;
     border: none;
-    background-color:antiquewhite
+    background-color:antiquewhite;
+    opacity:65%;
 
 }
 

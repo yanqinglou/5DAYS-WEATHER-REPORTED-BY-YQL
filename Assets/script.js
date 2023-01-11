@@ -5,7 +5,7 @@ var searchbtnEl = document.getElementById("search-button");
 var cityListDiv = document.querySelector(".city-list");
 var weatherInfoLocal = [];
 localStorage.getItem("weather-info-local");
-var cityInfoLocal = { city: "",date:"", temp: "", wind: "", humidity: "" };
+var cityInfoLocal = { city: "", date: "", temp: "", wind: "", humidity: "" };
 var citySearched, citybuttonEl;
 var latitudeData, longitudeData;
 var limit = 5;
@@ -31,13 +31,15 @@ searchbtnEl.addEventListener("click", function () {
     alertMsg.textContent = "You have to enter a name of the city";
     cityListDiv.append(alertMsg);
   } else {
+    if (alertMsg) {
+      alertMsg.remove();
+    }
     citybuttonEl = document.createElement("button");
     citybuttonEl.textContent = citySearched;
     cityListDiv.append(citybuttonEl);
     cityInputEl.value = "";
     //fetch geo data
     fetchgeodata(citySearched, limit, apikey);
-    console.log(citySearched);
   }
 });
 
@@ -70,6 +72,7 @@ function fetchweatherdata(latitude, longitude, apikey) {
       citySelectedEl.textContent = data.city.name;
       //show date
       todayDateEl.textContent = data.list[0].dt_txt;
+  
       //show temperature
       cityindisplayTemp.textContent = data.list[0].main.temp;
       //show wind speed
@@ -84,14 +87,14 @@ function fetchweatherdata(latitude, longitude, apikey) {
       cityInfoLocal.temp = data.list[0].main.temp;
       cityInfoLocal.humidity = data.list[0].main.humidity + "%";
       weatherInfoLocal.push(cityInfoLocal);
-
+      cityInfoLocal = {};
       localStorage.setItem(
         "weather-info-local",
         JSON.stringify(weatherInfoLocal)
       );
 
       //5 days information
-      var j = 0
+      var j = 0;
       //loop through 5 days in the list
       for (var i = 7; i < 40; i = i + 8) {
         fivedayscity[j].textContent = data.list[i].dt_txt;
@@ -99,9 +102,17 @@ function fetchweatherdata(latitude, longitude, apikey) {
         fivedaysWind[j].textContent = data.list[i].wind.speed + " MPH";
         fivedaysHumidity[j].textContent = data.list[i].main.humidity + "%";
         //save 5 days data to local storage
-        
+        cityInfoLocal.date = data.list[0].dt_txt;
+        cityInfoLocal.wind = data.list[0].wind.speed + " MPH";
+        cityInfoLocal.temp = data.list[0].main.temp;
+        cityInfoLocal.humidity = data.list[0].main.humidity + "%";
+        weatherInfoLocal.push(cityInfoLocal);
+        cityInfoLocal = {};
+        localStorage.setItem(
+          "weather-info-local",
+          JSON.stringify(weatherInfoLocal)
+        );
         j = j + 1;
-
       }
     });
 }
