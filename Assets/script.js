@@ -4,8 +4,8 @@ var cityInputEl = document.getElementById("city-input");
 var searchbtnEl = document.getElementById("search-button");
 var cityListDiv = document.querySelector(".city-list");
 var weatherInfoLocal = [];
-weatherInfoLocal = localStorage.getItem("weather-info-local");
-var cityInfoLocal = { city: "", temp: "", wind: "", humidity: "" };
+localStorage.getItem("weather-info-local");
+var cityInfoLocal = { city: "",date:"", temp: "", wind: "", humidity: "" };
 var citySearched, citybuttonEl;
 var latitudeData, longitudeData;
 var limit = 5;
@@ -16,10 +16,10 @@ var cityindisplayTemp = document.getElementById("temp");
 var cityindisplayWind = document.getElementById("wind");
 var cityindisplayHumidity = document.getElementById("humidity");
 
-var fivedayscity = document.querySelectorAll('#weather-card-city')
-var fivedaysTemp = document.querySelectorAll('#weather-card-temp')
-var fivedaysWind = document.querySelectorAll('#weather-card-wind')
-var fivedaysHumidity = document.querySelectorAll('#weather-card-humidity')
+var fivedayscity = document.querySelectorAll(".weather-card-city");
+var fivedaysTemp = document.querySelectorAll(".weather-card-temp");
+var fivedaysWind = document.querySelectorAll(".weather-card-wind");
+var fivedaysHumidity = document.querySelectorAll(".weather-card-humidity");
 
 //click on the search button to start fetch data
 // searchbtnEl.addEventListener("click", fetchgeodata(citySearched));
@@ -79,28 +79,30 @@ function fetchweatherdata(latitude, longitude, apikey) {
 
       //Save today's weather information to local storage
       cityInfoLocal.city = data.city.name;
+      cityInfoLocal.date = data.list[0].dt_txt;
       cityInfoLocal.wind = data.list[0].wind.speed + " MPH";
       cityInfoLocal.temp = data.list[0].main.temp;
       cityInfoLocal.humidity = data.list[0].main.humidity + "%";
-      console.log(cityInfoLocal);
-      console.log(weatherInfoLocal);
-      weatherInfoLocal.push(cityInfoLocal)
-      
+      weatherInfoLocal.push(cityInfoLocal);
+
       localStorage.setItem(
         "weather-info-local",
         JSON.stringify(weatherInfoLocal)
       );
 
       //5 days information
-      for (var i=7;i<40;i=i+8){
-        for (var j=0;j<5;j++){
-          fivedayscity[j].textContent=data.list[0].dt_txt;
-          fivedaysTemp[j].textContent=data.list[i].main.temp;
-          fivedaysWind[j].textContent=data.list[i].wind.speed + " MPH";
-          fivedaysHumidity[j].textContent=data.list[i].main.humidity + "%";
-        }
-      }
+      var j = 0
+      //loop through 5 days in the list
+      for (var i = 7; i < 40; i = i + 8) {
+        fivedayscity[j].textContent = data.list[i].dt_txt;
+        fivedaysTemp[j].textContent = data.list[i].main.temp;
+        fivedaysWind[j].textContent = data.list[i].wind.speed + " MPH";
+        fivedaysHumidity[j].textContent = data.list[i].main.humidity + "%";
+        //save 5 days data to local storage
+        
+        j = j + 1;
 
+      }
     });
 }
 
