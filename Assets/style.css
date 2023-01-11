@@ -1,6 +1,7 @@
 *{
     margin:0;
     padding:0;
+    color:darkslategrey;
 }
 
 main{
@@ -90,7 +91,9 @@ input{
 
 .city-in-display{
     border:1px solid black;
-    padding: 5px 0 5px 5px;}
+    padding: 5px 0 5px 5px;
+    line-height: 200%;
+}
 
 .weather-card-container{
     display: flex;
@@ -100,8 +103,9 @@ input{
 
 .weather-card{
     width: 14%;
-    background-color: darkslateblue;
+    background-color: #bac7cc;
     padding:5px 10px 5px 5px;
-    border:1px solid;
+    line-height: 200%;
+    border-radius: 8px;
 }
 
